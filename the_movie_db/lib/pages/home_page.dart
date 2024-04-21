@@ -18,18 +18,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-
-      /** 
-      * O FutureBuilder é um widget que constroi elemento de UI com base em uma requisição assincrona.
-      * A propriedade future faz com que o widget consiga monitorar o andamento da requisição
-      */
       body: FutureBuilder(
-        future: context.read<MovieRepositoryImpl>().getUpcoming(), //TODO: Criar providers na Parte II. è neste ponto que executaremos uma requisição à API TheMovieDB.
+        future: context.read<MovieRepositoryImpl>().getUpcoming(),
         builder: (context, snapshot) {
-          /** O método builder rebebe como argumento o snapshot(uma imagem instantanea) do estado atual da requisição.
-          * Atraves dele, podemos analidar o status da conexão e o status dos dados recebidos.
-          * Com base nestes status podemos decidir o que vamos exibir na UI; o FutureBuilder controla todo o fluxo.
-          */
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(
               child: SizedBox(
@@ -40,10 +31,8 @@ class _HomePageState extends State<HomePage> {
             );
           }
 
-          //Aqui coletamos os dados após a conclusão da requisição
           var data = snapshot.data;
 
-          // Caso não haja dados, exibimos um Widget customizado.
           if (data?.isEmpty ?? true) {
             return const Center(
               child: Card(
@@ -76,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   fadeInDuration: const Duration(milliseconds: 500),
                   //O NetworkImage irá fazer uma requisição e baixar a imagem dos poster.
                   image: NetworkImage(data![index].getPostPathUrl()),
-                  placeholder: const AssetImage('assets/images/logo.png'),
+                  placeholder: const AssetImage('images/logo.png'),
                 );
               });
         },
